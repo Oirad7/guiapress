@@ -6,6 +6,9 @@ const app = express();
 const connection = require('./database/database');
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
+const usersController = require('./users/UserController');
+
+
 
 const Category = require('./categories/Category');
 const Article = require('./articles/Article');
@@ -29,7 +32,8 @@ app.use(express.json());
 
 
 app.use('/', categoriesController);
-app.use('/', articlesController)
+app.use('/', articlesController);
+app.use('/', usersController);
 
 app.get('/', (req, res) => {
     Article.findAll({
