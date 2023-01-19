@@ -3,15 +3,16 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const session = require('express-session');
+
 const connection = require('./database/database');
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
 const usersController = require('./users/UserController');
 
-
-
 const Category = require('./categories/Category');
 const Article = require('./articles/Article');
+const User = require("./users/User");
 
 
 connection
@@ -25,6 +26,13 @@ connection
 
 app.set('view engine', 'ejs');
 
+app.use(session({
+    secret: "lsdçqcgfegh",
+    resave: true, //novo parametro obrigatorio
+    saveUninitialized: true, //novo parametro obrigatorio
+    cookie: { maxAge: 30000} //miliseg
+}));
+
 app.use(express.static('public'));
 
 app.use(express.urlencoded({extended: false}));
@@ -34,6 +42,9 @@ app.use(express.json());
 app.use('/', categoriesController);
 app.use('/', articlesController);
 app.use('/', usersController);
+
+
+
 
 app.get('/', (req, res) => {
     Article.findAll({
